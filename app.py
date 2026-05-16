@@ -13,9 +13,20 @@ categories = ['Normal', 'COVID']
 # =========================
 # LOAD MODEL
 # =========================
+from tensorflow.keras.models import model_from_json
+
 @st.cache_resource
 def load_cnn_model():
-    model = load_model("model_cnn.h5", compile=False)
+
+    # Load architecture
+    with open("model_architecture.json", "r") as json_file:
+        loaded_model_json = json_file.read()
+
+    model = model_from_json(loaded_model_json)
+
+    # Load weights
+    model.load_weights("model_weights.h5")
+
     return model
 
 model = load_cnn_model()
