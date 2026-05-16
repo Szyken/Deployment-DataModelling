@@ -15,7 +15,7 @@ categories = ['Normal', 'COVID']
 # =========================
 @st.cache_resource
 def load_cnn_model():
-    model = load_model('model_cnn.keras')
+    model = load_model('model_cnn.h5')
     return model
 
 model = load_cnn_model()
