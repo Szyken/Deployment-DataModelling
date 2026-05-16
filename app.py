@@ -1,20 +1,9 @@
 import streamlit as st
-import numpy as np
-import cv2
-from PIL import Image
-from tensorflow.keras.models import load_model
-
-# =========================
-# CONFIG
-# =========================
-IMG_SIZE = 100
-categories = ['Normal', 'COVID']
-
-# =========================
-# LOAD MODEL
-# =========================
-import streamlit as st
 import tensorflow as tf
+import numpy as np
+from PIL import Image
+import cv2
+
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import (
     Conv2D,
@@ -29,21 +18,42 @@ from tensorflow.keras.layers import (
 def load_cnn_model():
 
     model = Sequential([
-        Conv2D(32, (3,3), activation='relu', padding='same', input_shape=(100,100,3)),
+
+        Conv2D(
+            32,
+            (3,3),
+            activation='relu',
+            padding='same',
+            input_shape=(100,100,3)
+        ),
+
         BatchNormalization(),
         MaxPooling2D(2,2),
 
-        Conv2D(64, (3,3), activation='relu', padding='same'),
+        Conv2D(
+            64,
+            (3,3),
+            activation='relu',
+            padding='same'
+        ),
+
         BatchNormalization(),
         MaxPooling2D(2,2),
 
-        Conv2D(128, (3,3), activation='relu', padding='same'),
+        Conv2D(
+            128,
+            (3,3),
+            activation='relu',
+            padding='same'
+        ),
+
         BatchNormalization(),
         MaxPooling2D(2,2),
 
         Flatten(),
 
         Dense(128, activation='relu'),
+
         Dropout(0.5),
 
         Dense(1, activation='sigmoid')
@@ -53,41 +63,33 @@ def load_cnn_model():
 
     return model
 
+
 model = load_cnn_model()
 
-# =========================
-# PREPROCESSING
-# =========================
-def preprocess_image(image):
-
-    # Convert PIL -> NumPy
-    image = np.array(image)
-
-    # Convert RGB
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-
-    # Resize sesuai training
-    image = cv2.resize(image, (IMG_SIZE, IMG_SIZE))
-
-    # Normalisasi
-    image = image.astype('float32') / 255.0
-
-    # Tambahkan dimensi batch
-    image = np.expand_dims(image, axis=0)
-
-    return image
-
-# =========================
-# STREAMLIT UI
-# =========================
-st.set_page_config(page_title='COVID CNN Detection', layout='centered')
-
-st.title('COVID-19 Detection Using CNN')
-st.write('Upload gambar X-Ray untuk mendeteksi Normal atau COVID.')
+st.title("Deteksi Pneumonia CNN")
 
 uploaded_file = st.file_uploader(
-    'Upload Gambar X-Ray',
-    type=['jpg', 'jpeg', 'png']
+    "Upload Gambar X-Ray",
+    type=["jpg", "jpeg", "png"]
 )
 
-st.caption('Deep Learning CNN Model - Streamlit Deployment')
+if uploaded_file is not None:
+
+    image = Image.open(uploaded_file).convert("RGB")
+
+    img = np.array(image)
+
+    img = cv2.resize(img, (100,100))
+
+    img = img / 255.0
+
+    img = np.expand_dims(img, axis=0)
+
+    prediction = model.predict(img)
+
+    st.image(image, caption="Gambar Uploaded")
+
+    if prediction[0][0] > 0.5:
+        st.error("Pneumonia")
+    else:
+        st.success("Normal")
