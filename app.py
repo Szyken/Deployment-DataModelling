@@ -66,7 +66,7 @@ def load_cnn_model():
 
 model = load_cnn_model()
 
-st.title("Deteksi Pneumonia CNN")
+st.title("Deteksi COVID-19 dari X-Ray")
 
 uploaded_file = st.file_uploader(
     "Upload Gambar X-Ray",
@@ -90,6 +90,6 @@ if uploaded_file is not None:
     st.image(image, caption="Gambar Uploaded")
 
     if prediction[0][0] > 0.5:
-        st.error("Pneumonia")
+        st.error("COVID")
     else:
-        st.success("Normal")
+        st.success("NORMAL")
