@@ -11,8 +11,10 @@ Proyek ini merupakan implementasi pemodelan **Machine Learning** dan **Deep Lear
 ---
 
 ### 🖥️ Preview Aplikasi
+
+<!-- Ganti URL gambar di bawah dengan path screenshot di repo kamu atau drag-and-drop gambar ke editor GitHub -->
 <p align="center">
-  <img src="<img width="1917" height="901" alt="Screenshot 2026-11-17 145931" src="https://github.com/user-attachments/assets/0c9a54e2-7137-4cf0-91d2-b9cbc13e0616" />" width="85%" alt="Tampilan Aplikasi Deteksi COVID-19" />
+  <img width="1917" height="901" alt="Screenshot 2026-11-17 145931" src="https://github.com/user-attachments/assets/5e532687-e756-472a-b4d6-85efd05df701" />
 </p>
 
 ---
